@@ -23,9 +23,9 @@ export default function CameraAnimation() {
       { x: 0, y: -48.400, z: 2.040, lookAt: [0, -15, 0] }, // section-10
       { x: 0, y: -47.800, z: 2, lookAt: [0, -15, 0] },    // section-11
       { x: 0, y: -47.200, z: 1.98, lookAt: [0, -15, 0] }, // section-12
-      { x: 0, y: -47.200, z: 1.98, lookAt: [0, -15, 0] }, // section-13
-      { x: 0, y: -47.200, z: 1.98, lookAt: [0, -15, 0] }, // section-14
-      { x: 0, y: -47.200, z: 1.98, lookAt: [0, -15, 0] }  // section-15
+      { x: 0, y: -47.100, z: 1.98, lookAt: [0, -15, 0] }, // section-13
+      { x: 0, y: -47.100, z: 1.98, lookAt: [0, -15, 0] }, // section-14
+      { x: 0, y: -47.100, z: 1.98, lookAt: [0, -15, 0] }  // section-15
     ]
 
     const proxy = { x: camera.position.x, y: camera.position.y, z: camera.position.z }

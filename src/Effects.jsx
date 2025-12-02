@@ -23,17 +23,17 @@ export default function Effects() {
       <Bloom
         mipmapBlur
         luminanceThreshold={0.9}
-        intensity={config.bloomIntensity}
-        radius={0.9}
+        intensity={0.05}
+        radius={0.7}
       />
 
       {/* <GodRays sun={sunRef} exposure={0.34} decay={0.8} blur /> */}
 
       {/* 🎬 ToneMapping — professional kontrast va HDR balans */}
-      <ToneMapping adaptive={false} />
+      {/* <ToneMapping adaptive={false} /> */}
 
       {/* ⚡ Glitch — wow momentlar uchun (vaqti-vaqti bilan chiroyli shovqin) */}
-      <Glitch duration={0.5} strength={0.2} ratio={1} delay={3.5} />
+      {/* <Glitch duration={0.5} strength={0.2} ratio={1} delay={3.5} /> */}
 
     </EffectComposer>
   )

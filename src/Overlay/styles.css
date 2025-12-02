@@ -21,11 +21,11 @@
   pointer-events: none;
 }
 
-.container .line1 { left: 16.67%; }
+/* .container .line1 { left: 16.67%; }
 .container .line2 { left: 33.33%; }
 .container .line3 { left: 50%; }
 .container .line4 { left: 66.67%; }
-.container .line5 { left: 83.33%; }
+.container .line5 { left: 83.33%; } */
 
 .main-wrapper {
   width: 1200px;
