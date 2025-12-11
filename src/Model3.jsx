@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { MeshReflectorMaterial, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useFrame, useLoader, useThree } from '@react-three/fiber';
 
 export default function Model3(props) {
   const { nodes, materials } = useGLTF('/model3.glb')
@@ -154,11 +154,11 @@ const lamp1Material = useMemo(() => {
       
     textureImg.wrapS = THREE.RepeatWrapping;
     textureImg.wrapT = THREE.RepeatWrapping;
-    textureImg.repeat.set(1, 10); 
+    textureImg.repeat.set(1, 5); 
 
     const texture1Img = useLoader(
           THREE.TextureLoader,
-          process.env.PUBLIC_URL + "/img/20.jpg"
+          process.env.PUBLIC_URL + "/img/img/2.jpg"
     );
       
     texture1Img.wrapS = THREE.RepeatWrapping;
@@ -177,6 +177,8 @@ const lamp1Material = useMemo(() => {
     texture2Img.repeat.set(1, 1); 
 
     const useImages = () => {
+    const renderer = useThree((state) => state.gl);
+
     const texture3Img = useLoader(
       THREE.TextureLoader,
       Array.from({ length: 19 }, (_, i) =>
@@ -185,18 +187,38 @@ const lamp1Material = useMemo(() => {
     );
 
     texture3Img.forEach((tex) => {
-      tex.wrapS = THREE.RepeatWrapping;
-      tex.wrapT = THREE.RepeatWrapping;
-      tex.rotation = Math.PI;  
+      // kerakli orientatsiya
       tex.flipY = false;
-
-      tex.repeat.set(1, 1.1);
+      tex.rotation = 0;   // rotation = 0 bo‘lsin, keyin scale orqali o‘giramiz!
       tex.center.set(0.5, 0.5);
+
+      // HD + sharpening
+      tex.generateMipmaps = true; // mipmaps bo‘lsin
+      tex.minFilter = THREE.LinearMipMapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+      // scale bilan aylanadi (180°)
+      tex.repeat.set(-1, -1);
     });
 
     return texture3Img;
+    
   };
   const texture3Img = useImages();
+
+  const texture4Img = useLoader(
+          THREE.TextureLoader,
+          process.env.PUBLIC_URL + "/img/i.jpg"
+    );
+      
+    texture4Img.wrapS = THREE.RepeatWrapping;
+    texture4Img.wrapT = THREE.RepeatWrapping;
+    texture4Img.rotation = Math.PI / -1;
+    texture4Img.repeat.set(1, 1); 
+
+
 
 
 
@@ -253,6 +275,7 @@ const lamp1Material = useMemo(() => {
               toneMapped={false}
               color={hoveredScreen.ekran1 ? "gray" : "white"}
             />
+
           </mesh>
 
           <mesh
@@ -1157,13 +1180,13 @@ const lamp1Material = useMemo(() => {
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[-13.916, -1, -8.294]}
         >
-          {/* {video1Ref.current && (
+          {/* {video1Texture && (
             <meshBasicMaterial
-            map={video1Ref.current}
+            map={video1Texture}
             toneMapped={false}
           />)} */}
           <meshBasicMaterial
-            map={textureImg}
+            map={texture4Img}
           />
         </mesh>
         <mesh

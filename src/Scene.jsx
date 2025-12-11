@@ -13,6 +13,7 @@ import Effects from './Effects'
 import { CircleGeometry } from 'three'
 import { Perf } from 'r3f-perf'
 import Model3 from './Model3'
+import FlyingStars from './FlyingStars'
 
 
 function Scene() {
@@ -59,7 +60,8 @@ function Scene() {
 
 
           {/* <Particles particlesCount={100} /> */}
-          <Stars saturation={0} count={200} speed={2} />
+          {/* <Stars saturation={0} count={200} speed={2} /> */}
+          <FlyingStars count={100} />
 
 
         {/* </CameraRig> */}

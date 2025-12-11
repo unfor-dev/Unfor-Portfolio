@@ -9,10 +9,15 @@
     "@react-three/drei": "9.114.0",
     "@react-three/fiber": "8.17.8",
     "@react-three/postprocessing": "2.16.2",
+    "@tailwindcss/cli": "^4.1.17",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.17",
     "babel-plugin-glsl": "^1.0.0",
+    "clsx": "^2.1.1",
     "gsap": "^3.13.0",
     "leva": "^0.10.0",
     "maath": "0.10.8",
+    "motion": "^12.23.25",
     "noisejs": "2.1.0",
     "postprocessing": "6.36.2",
     "r3f-perf": "^7.2.3",
@@ -20,6 +25,7 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "18.0.0",
     "react-scripts": "5.0.0",
+    "tailwind-merge": "^3.4.0",
     "three": "0.168.0",
     "vercel": "^44.7.3"
   },
@@ -35,5 +41,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "tailwindcss": "^3.4.18"
+  }
 }

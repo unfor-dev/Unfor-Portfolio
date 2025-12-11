@@ -12,22 +12,9 @@ body,
   margin: 0;
   padding: 0;
   position: relative;
-  background: linear-gradient(135deg, #595d5e, #0b2950, #707070);
-  background-size: 300% 300%;
-  animation: bg-gradient 15s ease infinite;
-}
-@keyframes bg-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 canvas {
   position: fixed;
+  z-index: 1;
 }

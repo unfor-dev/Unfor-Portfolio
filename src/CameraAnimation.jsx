@@ -16,6 +16,12 @@ export default function CameraAnimation() {
       { x: 1.355, y: -0.425, z: -0.139, lookAt: [-0.5, 0, 3] }, // section-3 
       { x: 0, y: -1.05, z: 3, lookAt: [0, -1.3, 10] }, // section-4 
       { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
+      { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
+      { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
+      { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
+      { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
+      { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
+      { x: 0, y: -50.833, z: 2.206, lookAt: [0, 0, 0] }, // section-5 
       { x: 0, y: -50.800, z: 2.206, lookAt: [0, 0, 0] },    // section-6
       { x: 0, y: -50.500, z: 2.187, lookAt: [0, -15, 0] },  // section-7
       { x: 0, y: -49.800, z: 2.135, lookAt: [0, -15, 0] },  // section-8
@@ -36,8 +42,8 @@ export default function CameraAnimation() {
         trigger: ".container",
         start: "top top",
         end: "bottom bottom",
-        scrub: 4,
-        markers: true,
+        scrub: 1,
+        markers: false,
       },
       defaults: { ease: "none" },
       onUpdate: () => {
