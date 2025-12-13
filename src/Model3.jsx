@@ -168,13 +168,15 @@ const lamp1Material = useMemo(() => {
 
     const texture2Img = useLoader(
           THREE.TextureLoader,
-          process.env.PUBLIC_URL + "/img/wall.png"
+          process.env.PUBLIC_URL + "/img/8.jpg"
     );
       
     texture2Img.wrapS = THREE.RepeatWrapping;
     texture2Img.wrapT = THREE.RepeatWrapping;
     texture2Img.rotation = Math.PI / -2;
-    texture2Img.repeat.set(1, 1); 
+    texture2Img.repeat.set(3, 1); 
+    // texture2Img.repeat.set(4, 1); 
+    // texture2Img.repeat.set(3, 1); 
 
     const useImages = () => {
     const renderer = useThree((state) => state.gl);
