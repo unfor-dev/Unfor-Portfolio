@@ -64,10 +64,10 @@ function MusicButton() {
 function MenuFooter() {
   return (
     <div className="menu__footer">
-      <a href="#">Awwwards</a>
-      <a href="#">Instagram</a>
-      <a href="#">Dribble</a>
+      <a href="#">GitHub</a>
       <a href="#">LinkedIn</a>
+      <a href="#">Email</a>
+      <a href="#">Telegram</a>
     </div>
   )
 }

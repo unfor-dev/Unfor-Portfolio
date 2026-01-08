@@ -1,17 +1,43 @@
+/**
+ * Model3 Component
+ * ================
+ * 3D model komponenti - portfolio ekranlari bilan.
+ *
+ * O'zgartirildi:
+ * - projects.js dan ma'lumotlar import qilindi
+ * - onClick lar window.location.href ga o'zgartirildi (navigate uchun)
+ * - Har bir ekran o'z project ID si bilan bog'landi
+ */
+
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { MeshReflectorMaterial, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
+// Projects data import - har bir ekran uchun project ma'lumotlari
+import { getProjectByEkranId } from './data/projects';
 
-export default function Model3(props) {
+export default function Model3({ onProjectClick, ...props }) {
   const { nodes, materials } = useGLTF('/model3.glb')
 
   const [hoveredScreen, setHoveredScreen] = useState({});
 
+  /**
+   * Ekran bosilganda project modal ochish
+   * O'zgartirildi: window.location.href o'rniga callback ishlatiladi
+   * @param {string} ekranId - Ekran identifikatori (masalan: "ekran1")
+   */
+  const handleScreenClick = (ekranId) => {
+    const project = getProjectByEkranId(ekranId);
+    if (project && onProjectClick) {
+      // Parent komponentga project ID ni yuborish
+      onProjectClick(project.id);
+    }
+  };
+
 
   // Shift
-  materials['Material.001'].metalness = 1;
-  materials['Material.001'].roughness = 0.1;
+  materials['Material.001'].metalness = 0.8;
+  materials['Material.001'].roughness = 1;
   materials['Material.001'].color.set("#222222");
   materials['Material.001'].needsUpdate = true;
 
@@ -168,13 +194,13 @@ const lamp1Material = useMemo(() => {
 
     const texture2Img = useLoader(
           THREE.TextureLoader,
-          process.env.PUBLIC_URL + "/img/8.jpg"
+          process.env.PUBLIC_URL + "/img/5.jpg"
     );
       
     texture2Img.wrapS = THREE.RepeatWrapping;
     texture2Img.wrapT = THREE.RepeatWrapping;
     texture2Img.rotation = Math.PI / -2;
-    texture2Img.repeat.set(3, 1); 
+    texture2Img.repeat.set(2.4, 1); 
     // texture2Img.repeat.set(4, 1); 
     // texture2Img.repeat.set(3, 1); 
 
@@ -212,14 +238,33 @@ const lamp1Material = useMemo(() => {
 
   const texture4Img = useLoader(
           THREE.TextureLoader,
-          process.env.PUBLIC_URL + "/img/i.jpg"
+          process.env.PUBLIC_URL + "/img/17.jpg"
     );
       
     texture4Img.wrapS = THREE.RepeatWrapping;
     texture4Img.wrapT = THREE.RepeatWrapping;
     texture4Img.rotation = Math.PI / -1;
-    texture4Img.repeat.set(1, 1); 
+    texture4Img.repeat.set(4, 1); 
 
+    const texture5Img = useLoader(
+          THREE.TextureLoader,
+          process.env.PUBLIC_URL + "/img/9.jpg"
+    );
+      
+    texture5Img.wrapS = THREE.RepeatWrapping;
+    texture5Img.wrapT = THREE.RepeatWrapping;
+    texture5Img.rotation = Math.PI / -2;
+    texture5Img.repeat.set(2, 1); 
+
+    const texture6Img = useLoader(
+          THREE.TextureLoader,
+          process.env.PUBLIC_URL + "/img/18.jpg"
+    );
+      
+    texture6Img.wrapS = THREE.RepeatWrapping;
+    texture6Img.wrapT = THREE.RepeatWrapping;
+    texture6Img.rotation = Math.PI / -1;
+    texture6Img.repeat.set(1, 1); 
 
 
 
@@ -260,6 +305,7 @@ const lamp1Material = useMemo(() => {
             rotation={[Math.PI, -Math.PI / 6, Math.PI]}
             scale={[1.26, 1.2, 0.6]}
 
+            // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
             onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran1: true }));
@@ -270,7 +316,7 @@ const lamp1Material = useMemo(() => {
               setHoveredScreen(prev => ({ ...prev, ekran1: false }));
               document.body.style.cursor = "default";
             }}
-            onClick={() => window.open("https://samsung.com", "_blank")}
+            onClick={() => handleScreenClick('ekran1')}
           >
             <meshBasicMaterial
               map={texture3Img[1]}
@@ -302,6 +348,7 @@ const lamp1Material = useMemo(() => {
             rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
             scale={[1.26, 1.2, 0.6]}
 
+            // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
             onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran2: true }));
@@ -312,7 +359,7 @@ const lamp1Material = useMemo(() => {
               setHoveredScreen(prev => ({ ...prev, ekran2: false }));
               document.body.style.cursor = "default";
             }}
-            onClick={() => window.open("https://apple.com", "_blank")}
+            onClick={() => handleScreenClick('ekran2')}
           >
             <meshBasicMaterial
               map={texture3Img[18]}
@@ -334,46 +381,103 @@ const lamp1Material = useMemo(() => {
         <group name="pillar_left001" position={[-8.054, 0, -17.92]} rotation={[0, 1.571, 0]} />
         <group name="new-arch003" position={[0, 0, -19.941]} />
         <group name="new-arch005" position={[0, 0, -19.941]}>
-          <mesh
+          {/* <mesh
             name="floor-reka-chap"
             geometry={nodes['floor-reka-chap'].geometry}
             // material={materials['Material.003']}
-            material={lamp1Material}
+            // material={lamp1Material}
             position={[0, 0, -62.38]}
             rotation={[0, 0, -Math.PI]}
             scale={[-1, -1, -11.048]}
           >
+            <meshBasicMaterial
+              color={'white'}
+            />
           </mesh>
+          <mesh
+            name="floor-reka-ung"
+            geometry={nodes['floor-reka-ung'].geometry}
+            // material={materials['Material.001']}
+            // material={lamp1Material}
+            position={[0, 0, -62.38]}
+            rotation={[0, 0, -Math.PI]}
+            scale={[-1, -1, -11.048]}
+          >
+            <meshBasicMaterial
+              color={'white'}
+            />
+          </mesh> */}
           <mesh
             name="floor-reka-chap"
             geometry={nodes['floor-reka-chap'].geometry}
-            // material={materials['Material.003']}
-            material={lamp1Material}
+            position={[0, 0, -62.38]}
+            rotation={[0, 0, -Math.PI]}
+            scale={[-1, -1, -11.048]}
+          >
+            <meshBasicMaterial
+              color={'white'}
+            />
+          </mesh>
+
+          <mesh
+            name="floor-reka-chap"
+            geometry={nodes['floor-reka-chap'].geometry} //
             position={[-12.1, 0, -62.38]}
             rotation={[0, 0, -Math.PI]}
             scale={[-1, -1, -11.048]}
           >
+            <meshBasicMaterial
+              color={'white'}
+            />
           </mesh>
+          <mesh
+            name="floor-reka-chap"
+            geometry={nodes['floor-reka-chap'].geometry}
+            position={[-12.4, 16.1, -62.38]}
+            rotation={[0, 0, -Math.PI]}
+            scale={[-1, -1, -11.048]}
+          >
+            <meshBasicMaterial
+              color={'white'}
+            />
+          </mesh>
+
           <mesh
             name="floor-reka-ung"
             geometry={nodes['floor-reka-ung'].geometry}
-            // material={materials['Material.001']}
-            material={lamp1Material}
             position={[0, 0, -62.38]}
             rotation={[0, 0, -Math.PI]}
             scale={[-1, -1, -11.048]}
           >
+            <meshBasicMaterial
+              color={'white'}
+            />
           </mesh>
+
           <mesh
             name="floor-reka-ung"
-            geometry={nodes['floor-reka-ung'].geometry}
-            // material={materials['Material.001']}
-            material={lamp1Material}
+            geometry={nodes['floor-reka-ung'].geometry} //
             position={[12.1, 0, -62.38]}
             rotation={[0, 0, -Math.PI]}
             scale={[-1, -1, -11.048]}
           >
+            <meshBasicMaterial
+              color={'white'}
+            />
           </mesh>
+          <mesh
+            name="floor-reka-ung"
+            geometry={nodes['floor-reka-ung'].geometry}
+            position={[12.4, 16.1, -62.38]}
+            rotation={[0, 0, -Math.PI]}
+            scale={[-1, -1, -11.048]}
+          >
+            <meshBasicMaterial
+              color={'white'}
+            />
+          </mesh>
+
+
           <mesh
             name="floorr"
             geometry={nodes.floorr.geometry}
@@ -382,14 +486,14 @@ const lamp1Material = useMemo(() => {
             rotation={[0, 0, -Math.PI]}
             scale={[-1, -1, -11.048]}
           >
-            {/* <meshStandardMaterial
+            <meshBasicMaterial
               // map={videoRef.current}
               // toneMapped={false}
-              color={'#030609'}
-            /> */}
-            <meshBasicMaterial
-              map={textureImg}
+              color={'#222222'}
             />
+            {/* <meshBasicMaterial
+              map={texture4Img}
+            /> */}
               {/* <MeshReflectorMaterial
                 blur={[300, 300]}
                 resolution={1024}
@@ -406,13 +510,18 @@ const lamp1Material = useMemo(() => {
           <mesh
             name="shifr"
             geometry={nodes.shifr.geometry}
-            material={materials['Material.001']}
             position={[0, 32.575, -57.139]}
             scale={[-1.466, -1, -11.661]}
-          />
+            doubleSide={true}
+          >
+            <meshBasicMaterial
+              map={texture5Img}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
         </group>
         {/* O'rta strelka yo'q Start */}
-          <mesh
+          {/* <mesh
             geometry={nodes.screenLight1008.geometry}
             material={lamp1Material}
             position={[-0.550, 0.072, 8]}
@@ -467,7 +576,7 @@ const lamp1Material = useMemo(() => {
             position={[0.550, 0.072, -142]}
             rotation={[-Math.PI, Math.PI / -5, -Math.PI]}
             scale={[0.048, 0.009, 0.96]}
-          />
+          /> */}
           
         {/* O'rta strelka yo'q End */}
 
@@ -483,6 +592,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                   e.stopPropagation();
                   setHoveredScreen(prev => ({ ...prev, ekran3: true }));
@@ -493,7 +603,7 @@ const lamp1Material = useMemo(() => {
                   setHoveredScreen(prev => ({ ...prev, ekran3: false }));
                   document.body.style.cursor = "default";
                 }}
-                onClick={() => window.open("https://samsung.com", "_blank")}
+                onClick={() => handleScreenClick('ekran3')}
               >
                 <meshBasicMaterial
                   map={texture3Img[3]}
@@ -521,6 +631,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran4: true }));
@@ -531,7 +642,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran4: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran4')}
               >
               <meshBasicMaterial
                 map={texture3Img[4]}
@@ -563,7 +674,7 @@ const lamp1Material = useMemo(() => {
                 toneMapped={false}
               />)} */}
               <meshBasicMaterial
-                color="#222222"
+                color="#444444"
               />
 
         </mesh>
@@ -582,6 +693,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran7: true }));
@@ -592,7 +704,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran7: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsun.com", "_blank")}
+              onClick={() => handleScreenClick('ekran7')}
             >
               <meshBasicMaterial
                 map={texture3Img[5]}
@@ -620,6 +732,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran8: true }));
@@ -630,7 +743,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran8: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsun.com", "_blank")}
+              onClick={() => handleScreenClick('ekran8')}
             >
               <meshBasicMaterial
                 map={texture3Img[6]}
@@ -660,6 +773,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran5: true }));
@@ -670,7 +784,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran5: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsun.com", "_blank")}
+              onClick={() => handleScreenClick('ekran5')}
             >
               <meshBasicMaterial
                 map={texture3Img[7]}
@@ -698,6 +812,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran6: true }));
@@ -708,7 +823,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran6: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsun.com", "_blank")}
+              onClick={() => handleScreenClick('ekran6')}
             >
               <meshBasicMaterial
                 map={texture3Img[8]}
@@ -743,6 +858,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran13: true }));
@@ -753,7 +869,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran13: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran13')}
             >
               <meshBasicMaterial
                 map={texture3Img[9]}
@@ -781,6 +897,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran14: true }));
@@ -791,7 +908,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran14: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran14')}
             >
               <meshBasicMaterial
                 map={texture3Img[10]}
@@ -821,6 +938,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran15: true }));
@@ -831,7 +949,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran15: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran15')}
             >
               <meshBasicMaterial
                 map={texture3Img[11]}
@@ -859,6 +977,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran16: true }));
@@ -869,7 +988,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran16: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran16')}
             >
               <meshBasicMaterial
                 map={texture3Img[12]}
@@ -900,6 +1019,7 @@ const lamp1Material = useMemo(() => {
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
                 
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran11: true }));
@@ -910,7 +1030,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran11: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran11')}
             >
               <meshBasicMaterial
                 map={texture3Img[13]}
@@ -939,6 +1059,7 @@ const lamp1Material = useMemo(() => {
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
               
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran12: true }));
@@ -949,7 +1070,7 @@ const lamp1Material = useMemo(() => {
                   setHoveredScreen(prev => ({ ...prev, ekran12: false }));
                   document.body.style.cursor = "default";
                 }}
-                onClick={() => window.open("https://samsung.com", "_blank")}
+                onClick={() => handleScreenClick('ekran12')}
               >
                 <meshBasicMaterial
                   map={texture3Img[14]}
@@ -979,6 +1100,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran9: true }));
@@ -989,7 +1111,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran9: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsun.com", "_blank")}
+              onClick={() => handleScreenClick('ekran9')}
             >
               <meshBasicMaterial
                 map={texture3Img[15]}
@@ -1017,6 +1139,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
                 e.stopPropagation();
                 setHoveredScreen(prev => ({ ...prev, ekran10: true }));
@@ -1027,7 +1150,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran10: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsun.com", "_blank")}
+              onClick={() => handleScreenClick('ekran10')}
             >
               <meshBasicMaterial
                 map={texture3Img[16]}
@@ -1089,6 +1212,7 @@ const lamp1Material = useMemo(() => {
               position={[-2.994, 0.15, 5.01]}
               rotation={[Math.PI, -Math.PI / 6, Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran17: true }));
@@ -1099,7 +1223,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran17: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://samsung.com", "_blank")}
+              onClick={() => handleScreenClick('ekran17')}
             >
               <meshBasicMaterial
                 map={texture3Img[17]}
@@ -1127,6 +1251,7 @@ const lamp1Material = useMemo(() => {
               position={[2.994, 0.15, -4.99]}
               rotation={[-Math.PI, Math.PI / 6, -Math.PI]}
               scale={[1.26, 1.2, 0.6]}
+              // O'zgartirildi: onClick handleScreenClick ga o'zgartirildi
               onPointerOver={(e) => {
               e.stopPropagation();
               setHoveredScreen(prev => ({ ...prev, ekran18: true }));
@@ -1137,7 +1262,7 @@ const lamp1Material = useMemo(() => {
                 setHoveredScreen(prev => ({ ...prev, ekran18: false }));
                 document.body.style.cursor = "default";
               }}
-              onClick={() => window.open("https://google.com", "_blank")}
+              onClick={() => handleScreenClick('ekran18')}
             >
               <meshBasicMaterial
                 map={texture3Img[0]}
@@ -1188,7 +1313,7 @@ const lamp1Material = useMemo(() => {
             toneMapped={false}
           />)} */}
           <meshBasicMaterial
-            map={texture4Img}
+            map={texture6Img}
           />
         </mesh>
         <mesh

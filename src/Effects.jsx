@@ -24,7 +24,7 @@ export default function Effects() {
         mipmapBlur
         luminanceThreshold={0.9}
         intensity={0.05}
-        radius={0.7}
+        radius={0.6}
       />
 
       {/* <GodRays sun={sunRef} exposure={0.34} decay={0.8} blur /> */}

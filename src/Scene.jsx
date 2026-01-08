@@ -1,3 +1,12 @@
+/**
+ * Scene Component
+ * ===============
+ * 3D scene komponenti - Canvas va barcha 3D elementlar.
+ *
+ * O'zgartirildi:
+ * - onProjectClick prop qo'shildi - Model3 dan project click ni tashqariga uzatish uchun
+ */
+
 import React, { useRef, Suspense } from 'react'
 import * as THREE from 'three'
 import { Canvas } from '@react-three/fiber'
@@ -16,7 +25,7 @@ import Model3 from './Model3'
 import FlyingStars from './FlyingStars'
 
 
-function Scene() {
+function Scene({ onProjectClick }) {
   return (
     <Canvas dpr={[1, 1.5]} camera={{ position: [0, 0, 4], fov: 45 }} gl={{ antialias: true, powerPreference: 'high-performance' }} shadows={false}>
 
@@ -30,7 +39,8 @@ function Scene() {
           <group >
             <Model1 scale={1.3} position={[0, -4, 1.3]} rotation={[-0.1, -0.1, 0]} />
             <Model2 scale={3.3}  />
-            <Model3 scale={0.02} position={[0, -50.45, 2.136]} rotation={[1.5, 0, 0]} />
+            {/* O'zgartirildi: onProjectClick prop qo'shildi */}
+            <Model3 scale={0.02} position={[0, -50.45, 2.136]} rotation={[1.5, 0, 0]} onProjectClick={onProjectClick} />
           </group>
 
 
